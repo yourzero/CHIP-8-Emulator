@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Emulator\" />
     <Folder Include="IO\Screen\" />
   </ItemGroup>
 
