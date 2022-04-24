@@ -1,6 +1,6 @@
 ﻿namespace CHIP_8_Emulator.Emulator
 {
-    internal class Memory
+    public class Memory
     {
         /* 
             0x000-0x1FF - Chip 8 interpreter (contains font set in emu)

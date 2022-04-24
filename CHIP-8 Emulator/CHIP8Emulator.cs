@@ -9,13 +9,14 @@ namespace CHIP_8_Emulator
 {
     internal class CHIP8Emulator
     {
-        readonly Screen _screen = new Screen();
+        readonly ScreenDisplay _screenForm = new ScreenDisplay();
         readonly Emulator.Program _program;
         
         
         public CHIP8Emulator(string programFilePath)
         {
             _program = new Emulator.Program(programFilePath);
+
         }
 
 
@@ -23,7 +24,7 @@ namespace CHIP_8_Emulator
 
         public async Task StartAsync()
         {
-            ThreadStart start = new ThreadStart(delegate { StartScreen(_screen); });
+            ThreadStart start = new ThreadStart(delegate { StartScreen(_screenForm); });
             var screenThread = new Thread(start);
             screenThread.Start();
 
@@ -54,14 +55,20 @@ namespace CHIP_8_Emulator
 
             Thread.Sleep(500);
 
-            var executor = new Executor(_program);
+            var executor = new Executor(_program, UpdateScreen);
+            this._screenForm.Screen = executor.Screen;
             executor.Run();
 
         }
 
+        public void UpdateScreen()
+        {
+            _screenForm.Invoke(() => this._screenForm.Refresh());
+            //this._screenForm.Refresh();
+        }
 
 
-        private void StartScreen(Screen screen)
+        private void StartScreen(ScreenDisplay screen)
         {
             //screen = new Screen();
             Application.Run(screen);

@@ -1,6 +1,6 @@
 ﻿namespace CHIP_8_Emulator
 {
-    partial class Screen
+    partial class ScreenDisplay
     {
         /// <summary>
         /// Required designer variable.

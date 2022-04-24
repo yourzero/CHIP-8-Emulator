@@ -10,15 +10,23 @@ namespace CHIP_8_Emulator.Emulator
     internal class Executor
     {
         private readonly Program _program;
+        private readonly Action updateScreenFunc;
         private readonly Memory _memory;
+        private readonly Screen _screen;
 
         private int _programCounter = 0;
 
 
-        public Executor(Program program)
+        public Action UpdateDisplay { get; set; }
+
+        public Screen Screen { get => _screen; }
+
+        public Executor(Program program, Action updateScreenFunc)
         {
             _program = program;
+            this.updateScreenFunc = updateScreenFunc;
             _memory = new Memory();
+            _screen = new Screen();
         }
 
         /// <summary>
@@ -31,9 +39,18 @@ namespace CHIP_8_Emulator.Emulator
             // load into memory
             _memory.LoadProgram(_program);
 
-            ResetProgramCounter();
+            Reset();
 
             RunLoop();
+        }
+
+        private void Reset()
+        {
+            ResetProgramCounter();
+            _screen.Initialize();
+
+            // update the screen once
+            this.updateScreenFunc();
         }
 
         private void ResetProgramCounter()
@@ -63,6 +80,16 @@ namespace CHIP_8_Emulator.Emulator
             Decode(instruction);
 
             Execute();
+
+            // TODO - is this the right place for this?
+            if(this.Screen.NeedsRefreshed())
+            {
+                this.updateScreenFunc();
+                this.Screen.MarkAsRefreshed();
+            }
+
+            // TODO - test
+            this.Screen.RandomizeTest();
         }
 
 

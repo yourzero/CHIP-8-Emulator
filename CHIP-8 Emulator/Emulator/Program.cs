@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHIP_8_Emulator.Emulator
 {
-    internal class Program
+    public class Program
     {
         private byte[] _program;
         private readonly string _programFilePath;

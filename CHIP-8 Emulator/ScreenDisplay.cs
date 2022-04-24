@@ -11,40 +11,47 @@ using System.Windows.Forms;
 
 namespace CHIP_8_Emulator
 {
-    public partial class Screen : Form
+    public partial class ScreenDisplay : Form
     {
-        const int SCREEN_PIXEL_MULTIPLIER = 10;
-        private const int PIXELS_WIDTH = 64;
-        private const int PIXELS_HEIGHT = 32;
-        private const int ScreenWidth = PIXELS_WIDTH * SCREEN_PIXEL_MULTIPLIER;
-        private const int ScreenHeight = PIXELS_HEIGHT * SCREEN_PIXEL_MULTIPLIER;
+        public const int SCREEN_PIXEL_MULTIPLIER = 10;
+        public const int ScreenWidth = Emulator.Screen.PIXELS_WIDTH * SCREEN_PIXEL_MULTIPLIER;
+        public const int ScreenHeight = Emulator.Screen.PIXELS_HEIGHT * SCREEN_PIXEL_MULTIPLIER;
 
-        private const bool PIXEL_OFF = false;
-        private const bool PIXEL_ON = true;
+        public Emulator.Screen Screen { get; set; }
 
-        public Screen()
+        //public ScreenDisplay(Emulator.Screen screen) : this()
+        //{
+        //    Screen = screen;
+
+        //    //// wire the emulator's screen update event
+        //    //screen.UpdateDisplay = this.Refresh;
+        //}
+
+        public ScreenDisplay()
         {
             InitializeComponent();
 
-            SetStyle(ControlStyles.OptimizedDoubleBuffer |
-         ControlStyles.UserPaint |
-         ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(
+                 ControlStyles.OptimizedDoubleBuffer |
+                 ControlStyles.UserPaint |
+                 ControlStyles.AllPaintingInWmPaint, true);
 
-            InitializePixels();
+            //InitializePixels();
         }
 
-        private void InitializePixels()
+        public override void Refresh()
         {
-            _pixels = new bool[PIXELS_WIDTH,PIXELS_HEIGHT];
-
-            for (int i = 0; i < PIXELS_WIDTH; i++)
-            {
-                for (int j = 0; j < PIXELS_HEIGHT; j++)
-                {
-                    _pixels[i,j] = PIXEL_OFF;
-                }
-            }
+            base.Refresh();
         }
+
+        //public void Refresh()
+        //{
+        //    this.Invalidate();
+        //}
+
+
+
+
 
         protected override void InitLayout()
         {
@@ -72,8 +79,6 @@ namespace CHIP_8_Emulator
             //this.Invalidate();
         }
 
-        private bool[,] _pixels;
-
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -84,26 +89,12 @@ namespace CHIP_8_Emulator
         {
             base.OnPaint(e);
 
+            // TODO - this might need to be in OnPaintBackground
             DrawMainScreen(e.Graphics);
 
             DrawGraphics(e.Graphics);
         }
 
-        public void RandomizeTest()
-        {
-            Random rnd = new Random();
-            for (int x = 0; x < PIXELS_WIDTH; x++)
-            {
-                for (int y = 0; y < PIXELS_HEIGHT; y++)
-                {
-                    var v = rnd.Next(2);
-                    _pixels[x, y] = (v == 1);
-
-                }
-            }
-
-            this.Invalidate();
-        }
 
         //bool _testDraw = false;
 
@@ -115,6 +106,9 @@ namespace CHIP_8_Emulator
 
         private void DrawGraphics(Graphics graphics)
         {
+            if (Screen == null) return;
+
+
             //// TODO - read memory and draw
             //if(_testDraw)
             //{
@@ -125,22 +119,22 @@ namespace CHIP_8_Emulator
 
 
             Console.Write("|   || ");
-            for (int x = 0; x < PIXELS_WIDTH; x++) Console.Write("=");
+            for (int x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++) Console.Write("=");
             Console.Write(" ||");
             Console.WriteLine("");
 
 
 
             Console.Write("|   || ");
-            //for (int x = 0; x < PIXELS_WIDTH; x++) Console.Write("=");
-            for (int x = 0; x < PIXELS_WIDTH; x++) Console.Write(x % 10);
+            //for (int x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++) Console.Write("=");
+            for (int x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++) Console.Write(x % 10);
             Console.Write(" ||");
             Console.WriteLine("");
 
 
 
             Console.Write("|   || ");
-            for (int x = 0; x < PIXELS_WIDTH; x++) Console.Write("-");
+            for (int x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++) Console.Write("-");
             Console.Write(" ||");
             Console.WriteLine("");
 
@@ -148,15 +142,15 @@ namespace CHIP_8_Emulator
             var pixelOffBrush = new SolidBrush(Color.Black);
             var pixelOnBrush = new SolidBrush(Color.White);
 
-            for (int y=0; y<PIXELS_HEIGHT; y++)
+            for (int y = 0; y < Emulator.Screen.PIXELS_HEIGHT; y++)
             {
                 var rowNumber = y;
                 var strRowNumber = (rowNumber < 10) ? $"0{rowNumber}" : rowNumber.ToString();
                 Console.Write($"| {strRowNumber}|| ");
 
-                for (int x = 0; x < PIXELS_WIDTH; x++)
+                for (int x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++)
                 {
-                    var pixel = _pixels[x, y];
+                    var pixel = Screen.Pixels[x, y];
                     var pixelBinary = pixel ? 1 : 0;
 
                     Console.Write($"{pixelBinary}");
@@ -172,7 +166,7 @@ namespace CHIP_8_Emulator
                 }
 
 
-                    Console.Write(" ||");
+                Console.Write(" ||");
                 Console.WriteLine("");
             }
 
@@ -195,7 +189,7 @@ namespace CHIP_8_Emulator
             //}
 
             Console.Write("|   || ");
-            for (int x = 0; x < PIXELS_WIDTH; x++) Console.Write("=");
+            for (int x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++) Console.Write("=");
             Console.Write(" ||");
             Console.WriteLine("");
 
@@ -219,7 +213,7 @@ namespace CHIP_8_Emulator
 
             var consoleBrush = new SolidBrush(Color.Black);
             graphics.FillRectangle(consoleBrush, GetConsoleRectangle());
-//            graphics.DrawRectangle(blackPen, GetConsoleRectangle());
+            //            graphics.DrawRectangle(blackPen, GetConsoleRectangle());
 
 
         }
@@ -228,5 +222,7 @@ namespace CHIP_8_Emulator
         {
             return new Rectangle(0, 0, ScreenWidth, ScreenHeight);
         }
+
+
     }
 }
