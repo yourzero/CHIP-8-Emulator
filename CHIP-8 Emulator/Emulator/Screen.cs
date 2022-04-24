@@ -25,23 +25,34 @@ namespace CHIP_8_Emulator.Emulator
 
         private void InitializePixels()
         {
+            InitializeInner(Emulator.Screen.PIXEL_OFF);
+        }
+
+        private void InitializePixelsWhite()
+        {
+            InitializeInner(Emulator.Screen.PIXEL_ON);
+        }
+
+        private void InitializeInner(bool pixelValue)
+        {
             Pixels = new bool[Emulator.Screen.PIXELS_WIDTH, Emulator.Screen.PIXELS_HEIGHT];
 
             for (int i = 0; i < Emulator.Screen.PIXELS_WIDTH; i++)
             {
                 for (int j = 0; j < Emulator.Screen.PIXELS_HEIGHT; j++)
                 {
-                    Pixels[i, j] = Emulator.Screen.PIXEL_OFF;
+                    Pixels[i, j] = pixelValue;
                 }
             }
 
             _needsRefreshed = true;
         }
 
-
-        public void Initialize()
+        public void Initialize(bool isFirstTime)
         {
-            InitializePixels();
+            if (isFirstTime) InitializePixelsWhite();
+
+            else InitializePixels();
         }
 
         public void RandomizeTest()

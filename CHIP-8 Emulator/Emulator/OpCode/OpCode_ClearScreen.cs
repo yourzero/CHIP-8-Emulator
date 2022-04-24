@@ -6,8 +6,11 @@
 
         public override ExecutionResult Execute(ExecutionContext context)
         {
-            
-            throw new NotImplementedException();
+            // clear the screen
+            context.Screen.Initialize(false);
+
+
+            return new ExecutionResult();
         }
 
         public override string ToString()

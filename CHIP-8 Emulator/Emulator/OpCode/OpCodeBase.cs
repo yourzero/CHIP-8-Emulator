@@ -48,6 +48,7 @@
     public class ExecutionContext
     {
         public Memory Memory { get; set; }
+        public Screen Screen { get; set; }
     }
 
     public class ExecutionResult

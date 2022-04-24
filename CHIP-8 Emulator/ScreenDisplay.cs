@@ -41,6 +41,7 @@ namespace CHIP_8_Emulator
 
         public override void Refresh()
         {
+            Console.WriteLine("-- UPDATING SCREEN --");
             base.Refresh();
         }
 

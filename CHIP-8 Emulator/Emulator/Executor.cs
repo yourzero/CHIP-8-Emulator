@@ -47,7 +47,7 @@ namespace CHIP_8_Emulator.Emulator
         private void Reset()
         {
             ResetProgramCounter();
-            _screen.Initialize();
+            _screen.Initialize(true);
 
             // update the screen once
             this.updateScreenFunc();
@@ -77,9 +77,9 @@ namespace CHIP_8_Emulator.Emulator
 
             var instruction = Fetch();
 
-            Decode(instruction);
+            var opcode = Decode(instruction);
 
-            Execute();
+            Execute(opcode);
 
             // TODO - is this the right place for this?
             if(this.Screen.NeedsRefreshed())
@@ -89,7 +89,7 @@ namespace CHIP_8_Emulator.Emulator
             }
 
             // TODO - test
-            this.Screen.RandomizeTest();
+            //this.Screen.RandomizeTest();
         }
 
 
@@ -104,16 +104,33 @@ namespace CHIP_8_Emulator.Emulator
         }
 
 
-        private void Decode(Instruction instruction)
+        private IOpCode Decode(Instruction instruction)
         {
             var opcode = OpCodeDecoder.Decode(instruction);
+            return opcode;
         }
 
 
-        private void Execute()
+        private void Execute(IOpCode opcode)
         {
-         //   throw new NotImplementedException();
+            if(opcode == null)
+            {
+                Console.WriteLine($"NOT Executing because opcode was not found.");
+                return;
+            }
+
+            Console.WriteLine($"Executing opcode {opcode.OperationNibble.ToHex()}...");
+            var context = ExecutionContext;
+            opcode.Execute(context);
         }
+
+        // TODO - we could probably not instatiate this every time
+        private ExecutionContext ExecutionContext => new ExecutionContext
+        {
+            Memory = this._memory,
+            Screen = this._screen
+        };
+            
 
     }
 
