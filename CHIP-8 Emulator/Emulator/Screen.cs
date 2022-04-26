@@ -112,10 +112,10 @@ namespace CHIP_8_Emulator.Emulator
                     var drawAtX = x + bitIndex;
                     var drawAtY = y + bytesArrayIndex;
 
-                    if (drawAtX < Pixels.GetUpperBound(0) && drawAtY < Pixels.GetUpperBound(1))
-                    {
+                    //if (drawAtX < Pixels.GetUpperBound(0) && drawAtY < Pixels.GetUpperBound(1))
+                    //{
                         Pixels[drawAtX, drawAtY] = bits.Bits[bitIndex];
-                    }
+                    //}
                 }
 
 

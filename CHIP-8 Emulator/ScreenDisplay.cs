@@ -105,7 +105,7 @@ namespace CHIP_8_Emulator
 
         private void DrawGridOverlay(Graphics graphics)
         {
-            var redPen = new Pen(Color.Red);
+            var redPen = new Pen(Color.FromArgb(20, 20, 20));
             for(int y = 0; y <= Emulator.Screen.PIXELS_HEIGHT; y++)
             {
                 int verticalPos = y * SCREEN_PIXEL_MULTIPLIER;
@@ -117,7 +117,7 @@ namespace CHIP_8_Emulator
                 graphics.DrawLine(redPen, horizontalPos, 0, horizontalPos, ScreenHeight-1);
             }
 
-            var blue = new SolidBrush(Color.Green);
+            var blue = new SolidBrush(Color.FromArgb(20, 0, 255, 0));
             for(byte x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++)
             {
                 //if (x % 2 == 0) continue;
