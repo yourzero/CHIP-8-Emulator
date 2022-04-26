@@ -17,8 +17,16 @@ namespace CHIP_8_Emulator.Emulator
         private readonly Memory _memory;
         private readonly Screen _screen;
 
-        private int _programCounter = 0;
 
+        // TODO - we could probably not instatiate this every time
+        //private ExecutionContext ExecutionContext => new ExecutionContext
+        //{
+        //    Memory = this._memory,
+        //    Screen = this._screen,
+        //    ProgramCounter = 0
+        //};
+
+        private ExecutionContext ExecutionContext { get; set; }
 
         //public Action UpdateDisplay { get; set; }
 
@@ -26,8 +34,9 @@ namespace CHIP_8_Emulator.Emulator
 
         public Executor(Program program, Action updateDisplayFunc)
         {
-            _program = program;
             this.updateDisplayFunc = updateDisplayFunc;
+
+            _program = program;
             _memory = new Memory();
             _screen = new Screen();
         }
@@ -44,18 +53,29 @@ namespace CHIP_8_Emulator.Emulator
         {
             Console.WriteLine("Executing program...");
 
-            // load into memory
-            _memory.LoadProgram(_program);
-
+            
             Reset();
+
+            // load into memory
+            ExecutionContext.Memory.LoadProgram(ExecutionContext.Program);
+            ResetProgramCounter();
 
             RunLoop();
         }
 
         private void Reset()
         {
+            ExecutionContext = new ExecutionContext
+            {
+                Memory = _memory,
+                Screen = _screen,
+                Program = _program
+                //ProgramCounter = Memory.ProgramStartPos
+            };
+
             ResetProgramCounter();
-            _screen.Initialize(true);
+
+            ExecutionContext.Screen.Initialize(true);
 
             LoadFonts();
 
@@ -75,11 +95,11 @@ namespace CHIP_8_Emulator.Emulator
         {
 
             // load the font bitmap into memory, starting at 0x50 (a commonly-used starting place)
-            for(int i= 0; i < Font.FontBitmap.Length; i++)
+            for (int i = 0; i < Font.FontBitmap.Length; i++)
             {
                 var font = Font.FontBitmap[i];
 
-                _memory.Load(MEMORY_FONT_START_POS + i*FONT_LENGTH_BYTES, font);
+                ExecutionContext.Memory.Load(MEMORY_FONT_START_POS + i * FONT_LENGTH_BYTES, font);
             }
         }
 
@@ -92,12 +112,12 @@ namespace CHIP_8_Emulator.Emulator
                 var row = i / 4;
                 var col = i % 4;
 
-                var memoryPosForFont = MEMORY_FONT_START_POS +   i * FONT_LENGTH_BYTES; // each font character is 5 bytes
+                var memoryPosForFont = MEMORY_FONT_START_POS + i * FONT_LENGTH_BYTES; // each font character is 5 bytes
                 //var screenX = i * FONT_LENGTH_BYTES * 8;
                 var screenX = 0;
-                var fontBytes = _memory.Read(memoryPosForFont, FONT_LENGTH_BYTES);
-                
-                Screen.DrawBytesAsSprite(fontBytes, col * 8, row* FONT_LENGTH_BYTES + (i/4));
+                var fontBytes = ExecutionContext.Memory.Read(memoryPosForFont, FONT_LENGTH_BYTES);
+
+                Screen.DrawBytesAsSprite(fontBytes, col * 8, row * FONT_LENGTH_BYTES + (i / 4));
             }
 
 
@@ -108,7 +128,7 @@ namespace CHIP_8_Emulator.Emulator
 
         private void ResetProgramCounter()
         {
-            _programCounter = Memory.ProgramStartPos;
+            ExecutionContext.ProgramCounter = Memory.ProgramStartPos;
         }
 
         private void RunLoop()
@@ -148,10 +168,9 @@ namespace CHIP_8_Emulator.Emulator
 
         private Instruction Fetch()
         {
-            var instruction = Instruction.Read(_memory, _programCounter);
+            var instruction = Instruction.Read(ExecutionContext.Memory, ExecutionContext.ProgramCounter);
             // PC increments twice, as it reads 2 bytes
-            _programCounter++;
-            _programCounter++;
+            ExecutionContext.ProgramCounter+=2;
 
             return instruction;
         }
@@ -177,12 +196,12 @@ namespace CHIP_8_Emulator.Emulator
             opcode.Execute(context);
         }
 
-        // TODO - we could probably not instatiate this every time
-        private ExecutionContext ExecutionContext => new ExecutionContext
-        {
-            Memory = this._memory,
-            Screen = this._screen
-        };
+        //// TODO - we could probably not instatiate this every time
+        //private ExecutionContext ExecutionContext => new ExecutionContext
+        //{
+        //    Memory = this._memory,
+        //    Screen = this._screen
+        //};
 
 
     }

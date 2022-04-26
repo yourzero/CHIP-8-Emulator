@@ -1,12 +1,17 @@
 ﻿namespace CHIP_8_Emulator.Emulator
 {
-    class Instruction
+    public class Instruction
     {
         private readonly byte[] _data = new byte[2]; // an instruction is 2 bytes
         private readonly short _instruction;
 
         public short OpCode => _instruction;
         public byte[] Bytes => _data;
+
+        public int FullInstruction
+        {
+            get => (_data[1] << 8 | _data[1]);
+        }
 
         private Instruction(byte b1, byte b2)
         {

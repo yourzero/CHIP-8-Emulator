@@ -2,7 +2,8 @@
 {
     public static class OpCodeDecoder
     {
-        static Dictionary<byte, IOpCode> _opCodes; // indexed by the op code nibble
+        //static Dictionary<byte, IOpCode> _opCodes; // indexed by the op code nibble
+        static Dictionary<byte, Type> _opCodes;
 
 
 
@@ -23,50 +24,101 @@
 
             Console.WriteLine($"Decoding instruction {instruction.Bytes.ToHex()}: Op = {firstOpCode.ToHex()}...");
 
-            IOpCode decodedOpCode = Decode(firstOpCode);
+            // IOpCode decodedOpCode = Decode(firstOpCode);
+            //decodedOpCode.SetInstruction(instruction);
+
+            if (!OpCodeTypes.ContainsKey(firstOpCode))
+            {
+                Console.WriteLine($"Opcode {firstOpCode.ToHex()} is not implemented.");
+                //   throw new NotImplementedException($"Opcode {b.ToHex()} is not implemented.");
+                return null;
+            }
+
+            var decodedOpCode = GetOpCodeInstance(OpCodeTypes[firstOpCode], instruction);
+
 
             Console.WriteLine($"Decoded instruction {instruction.Bytes.ToHex()}: Op = {firstOpCode.ToHex()} -- OpCode found: {decodedOpCode}");
-
-
-
 
 
             return decodedOpCode;
         }
 
-        private static IOpCode Decode(byte b)
-        {
-            if (!OpCodes.ContainsKey(b))
-            {
-                Console.WriteLine($"Opcode {b.ToHex()} is not implemented.");
-                //   throw new NotImplementedException($"Opcode {b.ToHex()} is not implemented.");
-                return null;
-            }
+        //private static IOpCode Decode(byte b)
+        //{
+        //    if (!OpCodes.ContainsKey(b))
+        //    {
+        //        Console.WriteLine($"Opcode {b.ToHex()} is not implemented.");
+        //        //   throw new NotImplementedException($"Opcode {b.ToHex()} is not implemented.");
+        //        return null;
+        //    }
 
 
-            return OpCodes[b];
-        }
+        //    return OpCodes[b];
+        //}
+
+        //private static IOpCode Decode(Instruction instruction)
+        //{
+        //    byte b
+        //    if (!OpCodes.ContainsKey(b))
+        //    {
+        //        Console.WriteLine($"Opcode {b.ToHex()} is not implemented.");
+        //        //   throw new NotImplementedException($"Opcode {b.ToHex()} is not implemented.");
+        //        return null;
+        //    }
 
 
+        //    return OpCodes[b];
+        //}
 
-        static Dictionary<byte, IOpCode> OpCodes
+
+        static Dictionary<byte, Type> OpCodeTypes
         {
             get
             {
-                if (_opCodes == null) _opCodes = LoadOpCodes();
+                if (_opCodes == null) _opCodes = LoadOpCodeTypes();
                 return _opCodes;
             }
         }
 
-        private static Dictionary<byte, IOpCode> LoadOpCodes()
+        static IOpCode GetOpCodeInstance(Type opCodeType, Instruction instruction)
         {
-            var opCodes = new Dictionary<byte, IOpCode>();
+            return (IOpCode)Activator.CreateInstance(opCodeType, instruction);
+        }
+
+
+        //static Dictionary<byte, IOpCode> OpCodes
+        //{
+        //    get
+        //    {
+        //        if (_opCodes == null) _opCodes = LoadOpCodes();
+        //        return _opCodes;
+        //    }
+        //}
+
+        //private static Dictionary<byte, IOpCode> LoadOpCodes()
+        //{
+        //    var opCodes = new Dictionary<byte, IOpCode>();
+
+        //    foreach (var type in GetAllTypesThatImplementInterface<IOpCode>())
+        //    {
+        //        var handler = (IOpCode)Activator.CreateInstance(type);
+
+        //        opCodes.Add(handler.OperationNibble, handler);
+        //    }
+
+        //    return opCodes;
+        //}
+
+        private static Dictionary<byte, Type> LoadOpCodeTypes()
+        {
+            var opCodes = new Dictionary<byte, Type>();
 
             foreach (var type in GetAllTypesThatImplementInterface<IOpCode>())
             {
+                // instantiate the type to get its operation nibble
                 var handler = (IOpCode)Activator.CreateInstance(type);
 
-                opCodes.Add(handler.OperationNibble, handler);
+                opCodes.Add(handler.OperationNibble, type);
             }
 
             return opCodes;
