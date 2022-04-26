@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,24 +8,33 @@ namespace CHIP_8_Emulator.Emulator
 {
     internal class Executor
     {
+        private const int FONT_LENGTH_BYTES = 5;
+        private const byte MEMORY_FONT_START_POS = 0x50;
+
+
         private readonly Program _program;
-        private readonly Action updateScreenFunc;
+        private readonly Action updateDisplayFunc;
         private readonly Memory _memory;
         private readonly Screen _screen;
 
         private int _programCounter = 0;
 
 
-        public Action UpdateDisplay { get; set; }
+        //public Action UpdateDisplay { get; set; }
 
         public Screen Screen { get => _screen; }
 
-        public Executor(Program program, Action updateScreenFunc)
+        public Executor(Program program, Action updateDisplayFunc)
         {
             _program = program;
-            this.updateScreenFunc = updateScreenFunc;
+            this.updateDisplayFunc = updateDisplayFunc;
             _memory = new Memory();
             _screen = new Screen();
+        }
+
+        private void UpdateScreen()
+        {
+            this.updateDisplayFunc();
         }
 
         /// <summary>
@@ -49,9 +57,54 @@ namespace CHIP_8_Emulator.Emulator
             ResetProgramCounter();
             _screen.Initialize(true);
 
+            LoadFonts();
+
+
             // update the screen once
-            this.updateScreenFunc();
+            UpdateScreen();
+
+
+            // TODO - just testing
+            TESTPrintAllFontCharacters();
+            UpdateScreen();
+
+            Console.ReadLine();
         }
+
+        private void LoadFonts()
+        {
+
+            // load the font bitmap into memory, starting at 0x50 (a commonly-used starting place)
+            for(int i= 0; i < Font.FontBitmap.Length; i++)
+            {
+                var font = Font.FontBitmap[i];
+
+                _memory.Load(MEMORY_FONT_START_POS + i*FONT_LENGTH_BYTES, font);
+            }
+        }
+
+        // TODO - remove test
+        public void TESTPrintAllFontCharacters()
+        {
+            //for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
+            {
+                var row = i / 4;
+                var col = i % 4;
+
+                var memoryPosForFont = MEMORY_FONT_START_POS +   i * FONT_LENGTH_BYTES; // each font character is 5 bytes
+                //var screenX = i * FONT_LENGTH_BYTES * 8;
+                var screenX = 0;
+                var fontBytes = _memory.Read(memoryPosForFont, FONT_LENGTH_BYTES);
+                
+                Screen.DrawBytesAsSprite(fontBytes, col * 8, row* FONT_LENGTH_BYTES + (i/4));
+            }
+
+
+            //int memLocation = 0;
+
+        }
+
 
         private void ResetProgramCounter()
         {
@@ -82,9 +135,9 @@ namespace CHIP_8_Emulator.Emulator
             Execute(opcode);
 
             // TODO - is this the right place for this?
-            if(this.Screen.NeedsRefreshed())
+            if (this.Screen.NeedsRefreshed())
             {
-                this.updateScreenFunc();
+                this.UpdateScreen();
                 this.Screen.MarkAsRefreshed();
             }
 
@@ -113,7 +166,7 @@ namespace CHIP_8_Emulator.Emulator
 
         private void Execute(IOpCode opcode)
         {
-            if(opcode == null)
+            if (opcode == null)
             {
                 Console.WriteLine($"NOT Executing because opcode was not found.");
                 return;
@@ -130,73 +183,10 @@ namespace CHIP_8_Emulator.Emulator
             Memory = this._memory,
             Screen = this._screen
         };
-            
+
 
     }
 
 
-    public static class Extensions
-    {
-        /// <summary>
-        /// Extracts a nibble from a large number.
-        /// </summary>
-        /// <typeparam name="T">Any integer type.</typeparam>
-        /// <param name="t">The value to extract nibble from.</param>
-        /// <param name="nibblePos">The nibble to check,
-        /// where 0 is the least significant nibble.</param>
-        /// <returns>The extracted nibble.</returns>
-        public static byte GetNibble<T>(this T t, int nibblePos)
-         where T : struct, IConvertible
-        {
-            nibblePos *= 4;
-            var value = t.ToInt64(CultureInfo.CurrentCulture);
-            return (byte)((value >> nibblePos) & 0xF);
-        }
 
-        public static byte GetNibble(this short x)
-        {
-            byte nibble1 = (byte)(x & 0x0F);
-            byte nibble2 = (byte)((x & 0xF0) >> 4);
-
-
-            Console.WriteLine($"nibble1: {nibble1.ToHex()}, nibble2: {nibble2.ToHex()}");
-
-            return nibble1;
-        }
-
-        public static byte GetNibble(this byte x)
-        {
-            byte nibble1 = (byte)(x & 0x0F);
-            byte nibble2 = (byte)((x & 0xF0) >> 4);
-
-
-            Console.WriteLine($"nibble1: {nibble1.ToHex()}, nibble2: {nibble2.ToHex()}");
-
-            return nibble1;
-        }
-
-        public static (byte, byte) GetNibbles(this byte b)
-        {
-            // e.g.,
-            //byte x = 0x12; //hexadecimal notation for decimal 18 or binary 0001 0010
-
-            byte highNibble = (byte)(b >> 4 & 0xF); // = 0000 0001
-            byte lowNibble = (byte)(b & 0xF); // = 0000 0010
-
-
-//            Console.WriteLine($" -- GetNibbles: b = {b.ToHex()}, highNibble: {highNibble.ToHex()}, lowNibble: {lowNibble.ToHex()}");
-
-            return (highNibble, lowNibble);
-        }
-
-        public static string ToHex(this byte[] bytes)
-        {
-            return Convert.ToHexString(bytes);
-        }
-
-        public static string ToHex(this byte b)
-        {
-            return Convert.ToHexString(new [] { b });
-        }
-    }
 }

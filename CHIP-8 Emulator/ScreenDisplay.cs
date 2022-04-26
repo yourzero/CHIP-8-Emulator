@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CHIP_8_Emulator.Emulator;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,9 @@ namespace CHIP_8_Emulator
 {
     public partial class ScreenDisplay : Form
     {
-        public const int SCREEN_PIXEL_MULTIPLIER = 10;
-        public const int ScreenWidth = Emulator.Screen.PIXELS_WIDTH * SCREEN_PIXEL_MULTIPLIER;
-        public const int ScreenHeight = Emulator.Screen.PIXELS_HEIGHT * SCREEN_PIXEL_MULTIPLIER;
+        private const int SCREEN_PIXEL_MULTIPLIER = 20;
+        private const int ScreenWidth = Emulator.Screen.PIXELS_WIDTH * SCREEN_PIXEL_MULTIPLIER;
+        private const int ScreenHeight = Emulator.Screen.PIXELS_HEIGHT * SCREEN_PIXEL_MULTIPLIER;
 
         public Emulator.Screen Screen { get; set; }
 
@@ -29,6 +30,9 @@ namespace CHIP_8_Emulator
 
         public ScreenDisplay()
         {
+            //this.Size = new System.Drawing.Size(ScreenWidth, ScreenHeight);
+            this.ClientSize = new System.Drawing.Size(ScreenWidth+1, ScreenHeight+1);
+            
             InitializeComponent();
 
             SetStyle(
@@ -94,16 +98,38 @@ namespace CHIP_8_Emulator
             DrawMainScreen(e.Graphics);
 
             DrawGraphics(e.Graphics);
+
+            // TODO - make this a debug option
+            DrawGridOverlay(e.Graphics);
         }
 
+        private void DrawGridOverlay(Graphics graphics)
+        {
+            var redPen = new Pen(Color.Red);
+            for(int y = 0; y <= Emulator.Screen.PIXELS_HEIGHT; y++)
+            {
+                int verticalPos = y * SCREEN_PIXEL_MULTIPLIER;
+                graphics.DrawLine(redPen, 0, verticalPos, ScreenWidth - 1, verticalPos);
+            }
+            for (int x = 0; x <= Emulator.Screen.PIXELS_WIDTH; x++)
+            {
+                int horizontalPos = x * SCREEN_PIXEL_MULTIPLIER;
+                graphics.DrawLine(redPen, horizontalPos, 0, horizontalPos, ScreenHeight-1);
+            }
 
-        //bool _testDraw = false;
+            var blue = new SolidBrush(Color.Green);
+            for(byte x = 0; x < Emulator.Screen.PIXELS_WIDTH; x++)
+            {
+                //if (x % 2 == 0) continue;
+                graphics.DrawString(x.ToHex(), DefaultFont, blue, x * SCREEN_PIXEL_MULTIPLIER, 0);
+            }
 
-        //public void TestDraw()
-        //{
-        //    _testDraw = true;
-        //    this.Invalidate();
-        //}
+            for (byte y = 1; y < Emulator.Screen.PIXELS_HEIGHT; y++)
+            {
+                //if (x % 2 == 0) continue;
+                graphics.DrawString(y.ToHex(), DefaultFont, blue, 0, y * SCREEN_PIXEL_MULTIPLIER);
+            }
+        }
 
         private void DrawGraphics(Graphics graphics)
         {

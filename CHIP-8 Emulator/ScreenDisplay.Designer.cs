@@ -30,13 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // Screen
+            // ScreenDisplay
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(618, 264);
-            this.Name = "Screen";
+            //this.ClientSize = new System.Drawing.Size(199, 157);
+            //this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "ScreenDisplay";
             this.Text = "Screen";
             this.ResumeLayout(false);
 
