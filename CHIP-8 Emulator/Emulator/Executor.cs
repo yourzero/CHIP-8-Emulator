@@ -140,7 +140,9 @@ namespace CHIP_8_Emulator.Emulator
 
 
                 // todo - just for testing
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
+                Console.Write(">>");
+                Console.ReadLine();
             }
         }
 
@@ -191,7 +193,7 @@ namespace CHIP_8_Emulator.Emulator
                 return;
             }
 
-            Console.WriteLine($"Executing opcode {opcode.OperationNibble.ToHex()}...");
+            Console.WriteLine($"Executing opcode {opcode.OpCodeInstruction.ToHex()}...");
             var context = ExecutionContext;
             opcode.Execute(context);
         }

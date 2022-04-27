@@ -115,10 +115,15 @@
 
             foreach (var type in GetAllTypesThatImplementInterface<IOpCode>())
             {
-                // instantiate the type to get its operation nibble
-                var handler = (IOpCode)Activator.CreateInstance(type);
+                var instructionAttribute = type.GetCustomAttributes(typeof(OpCodeForInstructionAttribute), false).FirstOrDefault() as OpCodeForInstructionAttribute;
 
-                opCodes.Add(handler.OperationNibble, type);
+                if (instructionAttribute != null) opCodes.Add(instructionAttribute.InstructionNibble, type);
+                else throw new NotImplementedException($"Unable to find teh OpCodeForInstructionAttribute for class {type}.");
+                
+                //// instantiate the type to get its operation nibble
+                //var handler = (IOpCode)Activator.CreateInstance(type);
+
+                //opCodes.Add(handler.OperationNibble, type);
             }
 
             return opCodes;

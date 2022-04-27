@@ -7,7 +7,7 @@
         byte N { get;}
         byte NN { get;}
         int NNN { get;}
-        byte OperationNibble { get; }
+        //byte OperationNibble { get; }
         byte X { get;}
         byte Y { get;}
 
@@ -18,10 +18,10 @@
 
     public abstract class OpCodeBase : IOpCode
     {
-        /// <summary>
-        /// The operation this OpCode instance handles.
-        /// </summary>
-        public abstract byte OperationNibble { get; }
+        ///// <summary>
+        ///// The operation this OpCode instance handles.
+        ///// </summary>
+        //public abstract byte OperationNibble { get; }
 
         protected Instruction Instruction { get; set; }
 
