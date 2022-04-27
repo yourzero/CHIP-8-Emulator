@@ -1,5 +1,8 @@
 ﻿namespace CHIP_8_Emulator.Emulator
 {
+    /// <summary>
+    /// Represents the 4096-byte memory
+    /// </summary>
     public class Memory
     {
         /* 
@@ -31,14 +34,11 @@
 
             byte[] readBytes = new byte[length];
             Array.Copy(_memory, startPos, readBytes, 0, length);
-            //_memory.CopyTo(readBytes, length);
             return readBytes;
         }
 
         public void LoadProgram(Program program)
         {
-
-
             for (int i = 0; i < program.ProgramData.Length; i++)
             {
                 var memoryPosition = PROGRAM_START_POS + i;
@@ -49,7 +49,6 @@
         internal void Load(int memoryStart, byte[] font)
         {
             font.CopyTo(_memory, memoryStart);
-            //Array.Copy(font, 0, _memory, memoryStart, font.Length);
         }
     }
 }

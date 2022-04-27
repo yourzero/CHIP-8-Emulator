@@ -1,28 +1,24 @@
 ﻿namespace CHIP_8_Emulator.Emulator
 {
 
+    /// <summary>
+    /// Stores all of the information about an op code, including the possible combinations of its bytes/nibbles
+    /// </summary>
     public interface IOpCode
     {
         byte OpCodeInstruction { get;}
         byte N { get;}
         byte NN { get;}
-        int NNN { get;}
-        //byte OperationNibble { get; }
+        ushort NNN { get;}
         byte X { get;}
         byte Y { get;}
-
-        //void SetInstruction(Instruction instruction);
 
         ExecutionResult Execute(ExecutionContext context);
     }
 
+
     public abstract class OpCodeBase : IOpCode
     {
-        ///// <summary>
-        ///// The operation this OpCode instance handles.
-        ///// </summary>
-        //public abstract byte OperationNibble { get; }
-
         protected Instruction Instruction { get; set; }
 
         /// <summary>
@@ -53,50 +49,28 @@
         /// <summary>
         // The second, third and fourth nibbles. A 12-bit immediate memory address.
         /// </summary>
-        public int NNN { get; private set; }
+        public ushort NNN { get; private set; }
 
         public OpCodeBase(Instruction instruction)
         {
             this.Instruction = instruction;
 
-            // TODO - move this to a derived class
-            this.NNN = instruction.FullInstruction & 0x0FFF;
+            // decode the possible operands
+            (this.OpCodeInstruction, this.X) = instruction.Bytes[0].GetNibbles();
+            (this.Y, this.N) = instruction.Bytes[1].GetNibbles();
+            this.NN = instruction.Bytes[1];
+            this.NNN = (ushort) (instruction.FullInstruction & 0x0FFF);
         }
-
-        //void SetInstruction(Instruction instruction)
-        //{
-        //    this.NNN = instruction.FullInstruction & 0x0FFF;
-        //}
-
-        //private int DeriveNNN(byte[] instructionBytes)
-        //{
-
-        //}
 
         /*
          * X: The second nibble. Used to look up one of the 16 registers (VX) from V0 through VF.
-        Y: The third nibble. Also used to look up one of the 16 registers (VY) from V0 through VF.
-        N: The fourth nibble. A 4-bit number.
-        NN: The second byte (third and fourth nibbles). An 8-bit immediate number.
-        NNN: The second, third and fourth nibbles. A 12-bit immediate memory address.
+            Y: The third nibble. Also used to look up one of the 16 registers (VY) from V0 through VF.
+            N: The fourth nibble. A 4-bit number.
+            NN: The second byte (third and fourth nibbles). An 8-bit immediate number.
+            NNN: The second, third and fourth nibbles. A 12-bit immediate memory address.
         */
 
         public abstract ExecutionResult Execute(ExecutionContext context);
-
-
     }
-
-    public class ExecutionContext
-    {
-        public Program Program { get; set; }
-        public Memory Memory { get; set; }
-        public Screen Screen { get; set; }
-        public int ProgramCounter { get; set; }
-    }
-
-    public class ExecutionResult
-    {
-    }
-
 
 }

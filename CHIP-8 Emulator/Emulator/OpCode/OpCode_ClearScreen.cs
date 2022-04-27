@@ -7,9 +7,6 @@
         {
         }
 
-        //public override byte OperationNibble => 0;
-
-
         public override ExecutionResult Execute(ExecutionContext context)
         {
             // clear the screen

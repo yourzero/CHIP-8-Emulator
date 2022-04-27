@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CHIP_8_Emulator.Emulator
 {
+    /// <summary>
+    /// Handles the screen buffer (of pixels)
+    /// </summary>
     public class Screen
     {
         public const int PIXELS_WIDTH = 64;
@@ -57,10 +56,6 @@ namespace CHIP_8_Emulator.Emulator
                 InitializePixels();
         }
 
-        
-
-
-
         public void RandomizeTest()
         {
             Random rnd = new Random();
@@ -89,7 +84,7 @@ namespace CHIP_8_Emulator.Emulator
 
         internal void DrawBytesAsSprite(byte[] bytes, int x, int y)
         {
-            // TODO - add Sprite class
+            // TODO - add Sprite class?
 
             // each individual byte is a separate row (y)
             for(int bytesArrayIndex=0; bytesArrayIndex<bytes.Length; bytesArrayIndex++)
@@ -103,6 +98,9 @@ namespace CHIP_8_Emulator.Emulator
                 var bitsLog = new StringBuilder();
                 for(int i=0; i<bits.Bits.Length; i++) bitsLog.Append(bits.Bits[i] ? "1" : "0");
                 Console.WriteLine($"DrawBytesAsSprite: {thisByte.ToHex()} = {bitsLog}");
+
+                // TODO - XOR/flip pixels
+                // 0 is interpreted as transparent, 1 flips the pixel
 
 
                 // TODO - bounds check(s)
@@ -120,22 +118,6 @@ namespace CHIP_8_Emulator.Emulator
 
 
             }
-
-
-            //BitArray bytesAsBits = new BitArray(bytes);
-
-            //// TODO - bounds check(s)
-
-            //for(int i=0; i<bytesAsBits.Length; i++)
-            //{
-            //    var drawAtAx = x + i;
-            //    var drawAtY = y+
-            //    Pixels[drawAtAx, y] = bytesAsBits[i];
-            //}
-
-//            bytesAsBits.CopyTo(Pixels[x, y], bytes.Length);
-
-            //for(int i = 0; i<bytes.Length; i++)
 
             this._needsRefreshed = true;
         }

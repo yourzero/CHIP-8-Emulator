@@ -6,33 +6,24 @@ using System.Threading.Tasks;
 
 namespace CHIP_8_Emulator.Emulator
 {
-    internal class Executor
+    /// <summary>
+    /// The core of the emulator, runs the instructions in a cycle.
+    /// </summary>
+    internal class Processor
     {
         private const int FONT_LENGTH_BYTES = 5;
         private const byte MEMORY_FONT_START_POS = 0x50;
-
 
         private readonly Program _program;
         private readonly Action updateDisplayFunc;
         private readonly Memory _memory;
         private readonly Screen _screen;
 
-
-        // TODO - we could probably not instatiate this every time
-        //private ExecutionContext ExecutionContext => new ExecutionContext
-        //{
-        //    Memory = this._memory,
-        //    Screen = this._screen,
-        //    ProgramCounter = 0
-        //};
-
         private ExecutionContext ExecutionContext { get; set; }
-
-        //public Action UpdateDisplay { get; set; }
 
         public Screen Screen { get => _screen; }
 
-        public Executor(Program program, Action updateDisplayFunc)
+        public Processor(Program program, Action updateDisplayFunc)
         {
             this.updateDisplayFunc = updateDisplayFunc;
 
@@ -69,7 +60,8 @@ namespace CHIP_8_Emulator.Emulator
             {
                 Memory = _memory,
                 Screen = _screen,
-                Program = _program
+                Program = _program,
+                Registers = new Registers() // create a new instance so the registers are initialized
                 //ProgramCounter = Memory.ProgramStartPos
             };
 
@@ -79,7 +71,6 @@ namespace CHIP_8_Emulator.Emulator
 
             LoadFonts();
 
-
             // update the screen once
             UpdateScreen();
 
@@ -87,8 +78,6 @@ namespace CHIP_8_Emulator.Emulator
             // TODO - just testing
             TESTPrintAllFontCharacters();
             UpdateScreen();
-
-            Console.ReadLine();
         }
 
         private void LoadFonts()
@@ -103,7 +92,7 @@ namespace CHIP_8_Emulator.Emulator
             }
         }
 
-        // TODO - remove test
+        // TODO - remove this test
         public void TESTPrintAllFontCharacters()
         {
             //for (int i = 0; i < 16; i++)
@@ -119,10 +108,6 @@ namespace CHIP_8_Emulator.Emulator
 
                 Screen.DrawBytesAsSprite(fontBytes, col * 8, row * FONT_LENGTH_BYTES + (i / 4));
             }
-
-
-            //int memLocation = 0;
-
         }
 
 
@@ -141,14 +126,14 @@ namespace CHIP_8_Emulator.Emulator
 
                 // todo - just for testing
                 //Thread.Sleep(1000);
-                Console.Write(">>");
-                Console.ReadLine();
+                //Console.Write(">>");
+                //Console.ReadLine();
             }
         }
 
         private void RunOneCycle()
         {
-            Console.WriteLine("Running one cycle...");
+            Console.WriteLine("|----------- Running one cycle...");
 
             var instruction = Fetch();
 
@@ -165,6 +150,8 @@ namespace CHIP_8_Emulator.Emulator
 
             // TODO - test
             //this.Screen.RandomizeTest();
+
+            Console.WriteLine(" One cycle completed -----------|");
         }
 
 
@@ -194,20 +181,13 @@ namespace CHIP_8_Emulator.Emulator
             }
 
             Console.WriteLine($"Executing opcode {opcode.OpCodeInstruction.ToHex()}...");
+
+            //Console.Write(">>");
+            //Console.ReadLine();
+
             var context = ExecutionContext;
             opcode.Execute(context);
         }
-
-        //// TODO - we could probably not instatiate this every time
-        //private ExecutionContext ExecutionContext => new ExecutionContext
-        //{
-        //    Memory = this._memory,
-        //    Screen = this._screen
-        //};
-
-
     }
-
-
 
 }

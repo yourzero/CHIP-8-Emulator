@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8_Emulator.Emulator
 {
+    /// <summary>
+    /// Responsible for loading the program (ROM)
+    /// </summary>
     public class Program
     {
         private byte[] _program;

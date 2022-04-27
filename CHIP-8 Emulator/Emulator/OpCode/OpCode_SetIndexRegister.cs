@@ -13,14 +13,11 @@ namespace CHIP_8_Emulator.Emulator.OpCode
         {
         }
 
-        //    public override byte OperationNibble => 1;
-
         public override ExecutionResult Execute(ExecutionContext context)
         {
-            // 
-            throw new NotImplementedException();
+            context.Registers.I = this.NNN;
 
-            //return new ExecutionResult();
+            return new ExecutionResult();
         }
 
         public override string ToString()
@@ -28,30 +25,5 @@ namespace CHIP_8_Emulator.Emulator.OpCode
             return $"[OpCode: Set Index Register I]";
         }
     }
-
-
-    [OpCodeForInstruction(0x6)]
-    class OpCode_SetRegister : OpCodeBase
-    {
-        public OpCode_SetRegister(Instruction instruction) : base(instruction)
-        {
-        }
-
-        //    public override byte OperationNibble => 1;
-
-        public override ExecutionResult Execute(ExecutionContext context)
-        {
-            // 
-            throw new NotImplementedException();
-
-            //return new ExecutionResult();
-        }
-
-        public override string ToString()
-        {
-            return $"[OpCode: Set Register vx]";
-        }
-    }
-
 
 }

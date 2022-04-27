@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8_Emulator.Emulator
 {
+    /// <summary>
+    /// The font bitmaps
+    /// </summary>
     internal static class Font
     {
         public readonly static byte[][] FontBitmap = new byte[][]
