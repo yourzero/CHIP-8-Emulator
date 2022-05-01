@@ -1,4 +1,4 @@
-namespace CHIP_8_Emulator
+namespace CHIP_8
 {
     public partial class Form1 : Form
     {

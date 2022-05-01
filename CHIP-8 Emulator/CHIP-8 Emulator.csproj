@@ -13,4 +13,8 @@
     <Folder Include="IO\Screen\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Emulator\CHIP-8.Emulator.csproj" />
+  </ItemGroup>
+
 </Project>

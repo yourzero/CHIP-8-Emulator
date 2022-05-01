@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Text;
 
-namespace CHIP_8_Emulator.Emulator
+namespace CHIP_8.Emulator
 {
     /// <summary>
     /// Handles the screen buffer (of pixels)

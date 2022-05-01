@@ -1,4 +1,4 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8.Emulator
 {
     /// <summary>
     /// Responsible for loading the program (ROM)

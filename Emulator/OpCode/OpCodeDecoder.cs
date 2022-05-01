@@ -1,4 +1,4 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8.Emulator
 {
     /// <summary>
     /// A factory class that decodes an instruction and determines/generates the op code to be used to represent and execute the instruction

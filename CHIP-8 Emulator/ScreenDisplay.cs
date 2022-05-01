@@ -1,4 +1,4 @@
-﻿using CHIP_8_Emulator.Emulator;
+﻿using CHIP_8.Emulator;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CHIP_8_Emulator
+namespace CHIP_8
 {
     /// <summary>
     /// Represents the end result of the screen - e.g., the CRT or monitor

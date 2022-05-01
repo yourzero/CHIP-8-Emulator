@@ -1,4 +1,4 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8.Emulator
 {
     [OpCodeForInstruction(0x1)]
     class OpCode_Jump : OpCodeBase

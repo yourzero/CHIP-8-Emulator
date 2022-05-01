@@ -1,4 +1,4 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8.Emulator
 {
     /// <summary>
     /// Represents the registers of the CHIP-8

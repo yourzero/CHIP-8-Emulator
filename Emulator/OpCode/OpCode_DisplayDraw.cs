@@ -1,4 +1,4 @@
-﻿namespace CHIP_8_Emulator.Emulator.OpCode
+﻿namespace CHIP_8.Emulator.OpCode
 {
     [OpCodeForInstruction(0xD)] // DXYN
     class OpCode_DisplayDraw : OpCodeBase

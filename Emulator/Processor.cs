@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CHIP_8_Emulator.Emulator
+namespace CHIP_8.Emulator
 {
     /// <summary>
     /// The core of the emulator, runs the instructions in a cycle.
     /// </summary>
-    internal class Processor
+    public class Processor
     {
         private const int FONT_LENGTH_BYTES = 5;
         private const byte MEMORY_FONT_START_POS = 0x50;

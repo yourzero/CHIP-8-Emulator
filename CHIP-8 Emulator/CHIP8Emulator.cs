@@ -1,6 +1,5 @@
-﻿using CHIP_8_Emulator.Emulator;
-
-namespace CHIP_8_Emulator
+﻿
+namespace CHIP_8
 {
     /// <summary>
     /// The starting point for the emulator. starts all of the parts, then hands off control to the processor.
@@ -8,7 +7,7 @@ namespace CHIP_8_Emulator
     internal class CHIP8Emulator
     {
         readonly ScreenDisplay _screenForm = new ScreenDisplay();
-        readonly Emulator.Program _program;
+        readonly CHIP_8.Emulator.Program _program;
 
 
         public CHIP8Emulator(string programFilePath)
@@ -41,7 +40,7 @@ namespace CHIP_8_Emulator
 
             Thread.Sleep(500);
 
-            var executor = new Processor(_program, UpdateScreen);
+            var executor = new CHIP_8.Emulator.Processor(_program, UpdateScreen);
             this._screenForm.Screen = executor.Screen;
             executor.Run();
         }
