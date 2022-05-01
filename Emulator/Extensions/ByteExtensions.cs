@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace CHIP_8.Emulator
+namespace CHIP_8.Emulator.Extensions
 {
     public static class ByteExtensions
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CHIP_8.Emulator.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

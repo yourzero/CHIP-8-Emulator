@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CHIP_8.Emulator.Extensions;
+using System.Collections;
 using System.Text;
 
 namespace CHIP_8.Emulator

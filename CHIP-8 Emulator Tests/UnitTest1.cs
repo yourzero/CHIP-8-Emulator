@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CHIP_8_Emulator_Tests
+namespace CHIP_8.Tests
 {
     [TestClass]
     public class UnitTest1

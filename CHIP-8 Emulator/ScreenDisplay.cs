@@ -1,4 +1,5 @@
 ﻿using CHIP_8.Emulator;
+using CHIP_8.Emulator.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

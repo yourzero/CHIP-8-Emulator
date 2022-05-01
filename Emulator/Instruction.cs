@@ -1,4 +1,6 @@
-﻿namespace CHIP_8.Emulator
+﻿using CHIP_8.Emulator.Extensions;
+
+namespace CHIP_8.Emulator
 {
     /// <summary>
     /// Represents a single instruction (such as DXYN)

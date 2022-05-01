@@ -5,9 +5,9 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHIP-8 Emulator", "CHIP-8 Emulator\CHIP-8 Emulator.csproj", "{53883520-4179-46F3-A7FE-7AD0271A3CFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHIP-8 Emulator Tests", "CHIP-8 Emulator Tests\CHIP-8 Emulator Tests.csproj", "{CF362562-2B35-45E9-8499-68E1219B0184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHIP-8.Tests", "CHIP-8 Emulator Tests\CHIP-8.Tests.csproj", "{CF362562-2B35-45E9-8499-68E1219B0184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHIP-8.Emulator", "Emulator\CHIP-8.Emulator.csproj", "{E6102517-7D5D-42BB-AF2E-EE45080133DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHIP-8.Emulator", "Emulator\CHIP-8.Emulator.csproj", "{E6102517-7D5D-42BB-AF2E-EE45080133DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
