@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CHIP_8.Emulator.OpCode
+namespace CHIP_8.Emulator.OpCodes
 {
     [OpCodeForInstruction(0xA)]
     class OpCode_SetIndexRegister : OpCodeBase

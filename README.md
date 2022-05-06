@@ -26,6 +26,7 @@ This emulator is based on CHIP-8 specifications:
 # Status
 
 It is not yet complete: many opcodes must be implemented, and unit tests should be added.
+The initial testing ROM, "IBM Logo.ch8", is not quite working yet - it requires a couple more opcodes to function.
 
 
 

@@ -1,4 +1,4 @@
-﻿namespace CHIP_8.Emulator
+﻿namespace CHIP_8.Emulator.OpCodes
 {
     [OpCodeForInstruction(0x0)]
     class OpCode_ClearScreen : OpCodeBase

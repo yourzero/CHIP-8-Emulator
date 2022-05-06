@@ -1,4 +1,4 @@
-﻿namespace CHIP_8.Emulator
+﻿namespace CHIP_8.Emulator.OpCodes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class OpCodeForInstructionAttribute : Attribute

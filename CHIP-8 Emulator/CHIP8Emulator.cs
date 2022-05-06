@@ -16,7 +16,7 @@ namespace CHIP_8
 
         }
 
-        public async Task StartAsync()
+        public void StartAsync()
         {
             // start the screen display (form) 
 

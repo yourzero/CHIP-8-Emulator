@@ -1,4 +1,5 @@
 ﻿using CHIP_8.Emulator.Extensions;
+using CHIP_8.Emulator.OpCodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

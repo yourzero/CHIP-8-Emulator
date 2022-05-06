@@ -1,24 +1,10 @@
 ﻿using CHIP_8.Emulator.Extensions;
 
-namespace CHIP_8.Emulator
+namespace CHIP_8.Emulator.OpCodes
 {
-
     /// <summary>
-    /// Stores all of the information about an op code, including the possible combinations of its bytes/nibbles
+    /// The base class for all op codes. Provides access to the different parts (or combinations of parts) of the entire op code.
     /// </summary>
-    public interface IOpCode
-    {
-        byte OpCodeInstruction { get;}
-        byte N { get;}
-        byte NN { get;}
-        ushort NNN { get;}
-        byte X { get;}
-        byte Y { get;}
-
-        ExecutionResult Execute(ExecutionContext context);
-    }
-
-
     public abstract class OpCodeBase : IOpCode
     {
         protected Instruction Instruction { get; set; }
@@ -61,7 +47,7 @@ namespace CHIP_8.Emulator
             (this.OpCodeInstruction, this.X) = instruction.Bytes[0].GetNibbles();
             (this.Y, this.N) = instruction.Bytes[1].GetNibbles();
             this.NN = instruction.Bytes[1];
-            this.NNN = (ushort) (instruction.FullInstruction & 0x0FFF);
+            this.NNN = (ushort)(instruction.FullInstruction & 0x0FFF);
         }
 
         /*

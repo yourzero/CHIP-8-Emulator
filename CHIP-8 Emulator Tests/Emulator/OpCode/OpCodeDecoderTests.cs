@@ -1,11 +1,7 @@
 ﻿using CHIP_8.Emulator;
+using CHIP_8.Emulator.OpCodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CHIP_8_Emulator_Tests.Emulator.OpCode
 {

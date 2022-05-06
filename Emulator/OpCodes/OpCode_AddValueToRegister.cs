@@ -1,4 +1,4 @@
-﻿namespace CHIP_8.Emulator.OpCode
+﻿namespace CHIP_8.Emulator.OpCodes
 {
     [OpCodeForInstruction(0x7)] // 7XNN 
     class OpCode_AddValueToRegister : OpCodeBase

@@ -1,6 +1,6 @@
 ﻿using CHIP_8.Emulator.Extensions;
 
-namespace CHIP_8.Emulator
+namespace CHIP_8.Emulator.OpCodes
 {
     /// <summary>
     /// A factory class that decodes an instruction and determines/generates the op code to be used to represent and execute the instruction
@@ -55,9 +55,11 @@ namespace CHIP_8.Emulator
 
         /// <summary>
         /// Loads all of the op code classes, and indexes them by the primary op code (the first nibble in the instruction).
+        /// The op code classes are identified by the IOpCode interface and the (possibly optional in the future) OpCodeForInstruction attribute. 
+        /// The attribute identifies the instruction code (the first nibble of the whole instruction) that defines which operation to execute.
         /// // TODO - some op codes/instructions don't use just the first nibble, so this needs to be handled
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A Dictionary of all of the op code types, indexed by the instruction code (first nibble).</returns>
         /// <exception cref="NotImplementedException"></exception>
         private static Dictionary<byte, Type> LoadOpCodeTypes()
         {
