@@ -15,6 +15,9 @@ This project contains the emulator code itself.
 ### CHIP-8 Emulator Tests
 This is the unit test project.
 
+### ROMs
+This contains the CHIP-8 program ROMs being used for testing.
+
 
 # References
 
