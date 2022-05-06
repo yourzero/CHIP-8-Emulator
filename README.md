@@ -6,14 +6,14 @@ It shall be able to read CHIP-8 program files (ROMs) and execute them.
 
 # Project Organization
 
-## CHIP-8 Emulator
-	This project is the starting point for the application. It is responsible for displaying the output screen (an emulator monitor screen), and executing the emulator.
+### CHIP-8 Emulator
+This project is the starting point for the application. It is responsible for displaying the output screen (an emulator monitor screen), and executing the emulator.
 
-## Emulator
-	This project contains the emulator code itself.
+### Emulator
+This project contains the emulator code itself.
 
-## CHIP-8 Emulator Tests
-	This is the unit test project.
+### CHIP-8 Emulator Tests
+This is the unit test project.
 
 
 # References
