@@ -9,7 +9,7 @@ namespace CHIP_8.Emulator
     {
         static Dictionary<byte, Type> _opCodes;
 
-        internal static IOpCode Decode(Instruction instruction)
+        public static IOpCode Decode(Instruction instruction)
         {
             /*
              *  00E0 (clear screen)

@@ -35,7 +35,7 @@ namespace CHIP_8.Emulator
             );
         }
 
-        internal byte GetInstructionOpCode()
+        public byte GetInstructionOpCode()
         {
             return _data[0].GetNibbles().Item1;
         }
