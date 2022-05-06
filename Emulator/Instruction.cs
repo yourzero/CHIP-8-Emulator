@@ -1,12 +1,22 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿using CHIP_8.Emulator.Extensions;
+
+namespace CHIP_8.Emulator
 {
-    class Instruction
+    /// <summary>
+    /// Represents a single instruction (such as DXYN)
+    /// </summary>
+    public class Instruction
     {
         private readonly byte[] _data = new byte[2]; // an instruction is 2 bytes
         private readonly short _instruction;
 
         public short OpCode => _instruction;
         public byte[] Bytes => _data;
+
+        public int FullInstruction
+        {
+            get => (_data[1] << 8 | _data[1]);
+        }
 
         private Instruction(byte b1, byte b2)
         {
@@ -25,11 +35,8 @@
             );
         }
 
-        internal byte GetInstructionOpCode()
+        public byte GetInstructionOpCode()
         {
-            //return OpCode.GetNibble(0);
-            //return OpCode.GetNibble();
-            //return _data[0].GetNibble();
             return _data[0].GetNibbles().Item1;
         }
     }

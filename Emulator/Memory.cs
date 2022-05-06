@@ -1,5 +1,8 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8.Emulator
 {
+    /// <summary>
+    /// Represents the 4096-byte memory
+    /// </summary>
     public class Memory
     {
         /* 
@@ -24,15 +27,28 @@
             get { return _memory[i]; }
         }
 
+        public byte[] Read(int startPos, int length)
+        {
+            if (startPos >= _memory.Length || startPos + length >= _memory.Length)
+                throw new InvalidOperationException($"Attempt to read memory out of range.");
+
+            byte[] readBytes = new byte[length];
+            Array.Copy(_memory, startPos, readBytes, 0, length);
+            return readBytes;
+        }
+
         public void LoadProgram(Program program)
         {
-            
-            
-            for(int i = 0; i < program.ProgramData.Length; i++)
+            for (int i = 0; i < program.ProgramData.Length; i++)
             {
                 var memoryPosition = PROGRAM_START_POS + i;
                 _memory[memoryPosition] = program.ProgramData[i];
             }
+        }
+
+        internal void Load(int memoryStart, byte[] font)
+        {
+            font.CopyTo(_memory, memoryStart);
         }
     }
 }

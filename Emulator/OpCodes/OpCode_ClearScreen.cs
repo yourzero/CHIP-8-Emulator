@@ -1,8 +1,11 @@
-﻿namespace CHIP_8_Emulator.Emulator
+﻿namespace CHIP_8.Emulator.OpCodes
 {
+    [OpCodeForInstruction(0x0)]
     class OpCode_ClearScreen : OpCodeBase
     {
-        public override byte OperationNibble => 0;
+        public OpCode_ClearScreen(Instruction instruction) : base(instruction)
+        {
+        }
 
         public override ExecutionResult Execute(ExecutionContext context)
         {
@@ -18,6 +21,4 @@
             return $"[OpCode: Clear Screen]";
         }
     }
-
-
 }

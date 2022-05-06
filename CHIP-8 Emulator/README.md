@@ -1,0 +1,1 @@
+This project displays the emulated screen, loads the ROM, and starts the emulator. It doesn't do much else, so lay off, man.
